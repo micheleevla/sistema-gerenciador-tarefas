@@ -1,0 +1,423 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url("img/fundo.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+}
+
+.pagina-centralizada {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    margin-top: 20px;
+}
+
+.logo {
+    width: 180px;
+    margin-bottom: 10px;
+}
+
+.input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.input:focus {
+    outline: none;
+    border: 1px solid black;
+}
+
+.botao {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.botao:hover {
+    opacity: 0.92;
+}
+
+.botao-secundario {
+    background-color: #777;
+}
+
+.login-container,
+.dashboard-container {
+    background-color: white;
+    width: 350px;
+    margin: 120px auto;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.subtexto {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.acoes-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.topo-kanban {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.btn-sair {
+    padding: 8px 14px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-sair:hover {
+    opacity: 0.9;
+}
+
+.kanban-wrapper {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.coluna {
+    background-color: rgba(255, 255, 255, 0.97);
+    padding: 15px;
+    border-radius: 12px;
+    width: 250px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+    background-color: #f9f9f9;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    border-left: 5px solid transparent;
+}
+
+.card.atrasada {
+    border-left: 5px solid #d32f2f;
+    background-color: #fff4f4;
+}
+
+.add-btn {
+    margin-top: 15px;
+    padding: 8px;
+    width: 100%;
+    background-color: transparent;
+    border: 1px dashed #aaa;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.etiqueta {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.texto-tarefa {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.responsavel {
+    font-size: 12px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.prazo {
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.prazo.atrasado-texto {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+.botoes-card {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-card {
+    padding: 6px 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    font-size: 13px;
+}
+
+.btn-card:hover {
+    background-color: #e0e0e0;
+}
+
+.menu-mover {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.btn-mover {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.btn-mover:hover {
+    background-color: #f5f5f5;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-conteudo {
+    background-color: white;
+    width: 380px;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal-conteudo h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.modal-botoes {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.botoes-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.botoes-form .botao {
+    width: 50%;
+}
+
+.grid-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.dia-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.dia {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    min-height: 80px;
+}
+
+.tarefa-dia {
+    font-size: 12px;
+    background: #e0e0e0;
+    margin-top: 5px;
+    padding: 3px;
+    border-radius: 4px;
+}
+
+.topo-kanban {
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.btn-topo {
+    padding: 8px 14px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-topo:hover {
+    opacity: 0.9;
+}
+
+.calendario-wrapper {
+    width: 90%;
+    max-width: 950px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.controles-calendario {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.input-calendario {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-width: 150px;
+    background-color: white;
+}
+
+.calendario-box {
+    background-color: rgba(255, 255, 255, 0.96);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.grid-calendario {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.dia-header {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+}
+
+.dia-vazio {
+    min-height: 95px;
+}
+
+.dia-calendario {
+    background: white;
+    border-radius: 10px;
+    padding: 8px;
+    min-height: 95px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+    text-align: left;
+    overflow: hidden;
+}
+
+.numero-dia {
+    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.tarefa-dia {
+    font-size: 11px;
+    background: #e0e0e0;
+    margin-top: 5px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.atrasada-calendario {
+    background: #ffd6d6;
+    color: #b30000;
+    font-weight: bold;
+}
+
+.usuarios-container {
+    width: 500px;
+}
+
+.lista-usuarios {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.item-usuario {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.acoes-usuario {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alterar Senha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <h2>Alterar Senha</h2>
+
+    <input type="password" id="senhaAtual" placeholder="Senha atual" class="input">
+    <input type="password" id="novaSenha" placeholder="Nova senha" class="input">
+
+    <div class="botoes-form">
+        <button onclick="alterarSenha()" class="botao">Salvar</button>
+        <button onclick="voltar()" class="botao botao-secundario">Voltar</button>
+    </div>
+
+</div>
+
+<script>
+const API_URL = "http://localhost:5202/api";
+
+function voltar() {
+    window.location.href = "dashboard.html";
+}
+
+async function alterarSenha() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    const senhaAtual = document.getElementById("senhaAtual").value;
+    const novaSenha = document.getElementById("novaSenha").value;
+
+    if (!senhaAtual || !novaSenha) {
+        alert("Preencha todos os campos.");
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`${API_URL}/Usuarios/${usuario.id}/alterar-senha`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                senhaAtual: senhaAtual,
+                novaSenha: novaSenha
+            })
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(dados.mensagem || "Erro ao alterar senha.");
+            return;
+        }
+
+        alert("Senha alterada com sucesso!");
+        window.location.href = "dashboard.html";
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao conectar com a API.");
+    }
+}
+
+window.onload = function () {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        window.location.href = "login.html";
+    }
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerenciar Usuários</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container usuarios-container">
+
+    <h2>Gerenciar Usuários</h2>
+
+    <div class="botoes-form">
+        <button onclick="novoUsuario()" class="botao">Adicionar Novo Usuário</button>
+        <button onclick="voltar()" class="botao botao-secundario">Voltar</button>
+    </div>
+
+    <div id="listaUsuarios" class="lista-usuarios"></div>
+
+</div>
+
+<div id="modalUsuario" class="modal">
+    <div class="modal-conteudo">
+        <h3 id="tituloModalUsuario">Novo Usuário</h3>
+
+        <input type="text" id="nome" placeholder="Nome" class="input">
+        <input type="text" id="username" placeholder="Usuário" class="input">
+        <input type="email" id="email" placeholder="Email" class="input">
+        <input type="password" id="senha" placeholder="Senha" class="input">
+
+        <select id="tipo" class="input">
+            <option value="usuario">Usuário</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <div class="botoes-form">
+            <button onclick="salvarUsuario()" class="botao">Salvar</button>
+            <button onclick="fecharModalUsuario()" class="botao botao-secundario">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API_URL = "http://localhost:5202/api";
+let usuarioEditandoId = null;
+
+function voltar() {
+    window.location.href = "dashboard.html";
+}
+
+function novoUsuario() {
+    usuarioEditandoId = null;
+    document.getElementById("tituloModalUsuario").textContent = "Novo Usuário";
+    document.getElementById("nome").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("senha").value = "";
+    document.getElementById("tipo").value = "usuario";
+    document.getElementById("modalUsuario").style.display = "flex";
+}
+
+function fecharModalUsuario() {
+    document.getElementById("modalUsuario").style.display = "none";
+}
+
+async function carregarUsuarios() {
+    try {
+        const resposta = await fetch(`${API_URL}/Usuarios`);
+        const usuarios = await resposta.json();
+
+        const lista = document.getElementById("listaUsuarios");
+        lista.innerHTML = "";
+
+        usuarios.forEach(usuario => {
+            const item = document.createElement("div");
+            item.className = "item-usuario";
+
+            item.innerHTML = `
+                <div>
+                    <strong>${usuario.nome}</strong><br>
+                    <small>${usuario.username} • ${usuario.tipo}</small>
+                </div>
+                <div class="acoes-usuario">
+                    <button class="btn-card" onclick="editarUsuario(${usuario.id})">Visualizar / Editar</button>
+                    <button class="btn-card" onclick="excluirUsuario(${usuario.id})">Excluir</button>
+                </div>
+            `;
+
+            lista.appendChild(item);
+        });
+
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao carregar usuários.");
+    }
+}
+
+async function editarUsuario(id) {
+    try {
+        const resposta = await fetch(`${API_URL}/Usuarios/${id}`);
+        const usuario = await resposta.json();
+
+        usuarioEditandoId = id;
+
+        document.getElementById("tituloModalUsuario").textContent = "Editar Usuário";
+        document.getElementById("nome").value = usuario.nome || "";
+        document.getElementById("username").value = usuario.username || "";
+        document.getElementById("email").value = usuario.email || "";
+        document.getElementById("senha").value = usuario.senha || "";
+        document.getElementById("tipo").value = usuario.tipo || "usuario";
+
+        document.getElementById("modalUsuario").style.display = "flex";
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao buscar usuário.");
+    }
+}
+
+async function salvarUsuario() {
+    const nome = document.getElementById("nome").value;
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+    const tipo = document.getElementById("tipo").value;
+
+    if (!nome || !username || !senha) {
+        alert("Preencha os campos obrigatórios.");
+        return;
+    }
+
+    const body = {
+        nome,
+        username,
+        email,
+        senha,
+        tipo
+    };
+
+    try {
+        let resposta;
+
+        if (usuarioEditandoId !== null) {
+            resposta = await fetch(`${API_URL}/Usuarios/${usuarioEditandoId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+        } else {
+            resposta = await fetch(`${API_URL}/Usuarios`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            });
+        }
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(dados.mensagem || "Erro ao salvar usuário.");
+            return;
+        }
+
+        alert("Usuário salvo com sucesso!");
+        fecharModalUsuario();
+        carregarUsuarios();
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao conectar com a API.");
+    }
+}
+
+async function excluirUsuario(id) {
+    const confirmar = confirm("Tem certeza que deseja excluir este usuário?");
+    if (!confirmar) return;
+
+    try {
+        const resposta = await fetch(`${API_URL}/Usuarios/${id}`, {
+            method: "DELETE"
+        });
+
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+            alert(dados.mensagem || "Erro ao excluir usuário.");
+            return;
+        }
+
+        alert("Usuário excluído com sucesso!");
+        carregarUsuarios();
+    } catch (erro) {
+        console.error(erro);
+        alert("Erro ao excluir usuário.");
+    }
+}
+
+window.onload = function () {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    if (usuario.tipo !== "admin") {
+        alert("Acesso permitido somente para administradores.");
+        window.location.href = "dashboard.html";
+        return;
+    }
+
+    carregarUsuarios();
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <img src="img/logo.png" class="logo">
+
+    <h2 id="mensagemBoasVindas">Bem-vinda!</h2>
+
+    <p>Gerencie suas tarefas e projetos</p>
+
+    <button onclick="irParaKanban()" class="botao">Ir para Kanban</button>
+
+    <button onclick="irParaAlterarSenha()" class="botao">Alterar Senha</button>
+
+   <button id="btnUsuarios" onclick="irParaUsuarios()" class="botao">
+    Gerenciar Usuários
+
+    <button onclick="sair()" class="botao botao-secundario">
+        Sair
+    </button>
+
+</div>
+
+<script>
+function irParaKanban() {
+    window.location.href = "kanban.html";
+}
+
+function irParaUsuarios() {
+    window.location.href = "usuarios.html";
+}
+
+function irParaAlterarSenha() {
+    window.location.href = "alterar-senha.html";
+}
+
+function sair() {
+    localStorage.removeItem("usuarioLogado");
+    window.location.href = "login.html";
+}
+
+window.onload = function () {
+    const usuario = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuario) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    document.getElementById("mensagemBoasVindas").textContent = "Bem-vinda!";
+
+    if (usuario.tipo !== "admin") {
+        document.getElementById("btnUsuarios").style.display = "none";
+    }
+};
+</script>
+
+</body>
+</html>

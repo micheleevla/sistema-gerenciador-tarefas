@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="topo-kanban">
+        <button onclick="irParaCalendario()" class="btn-topo">Calendário</button>
+        <button onclick="sair()" class="btn-topo">Sair</button>
+    </div>
+
+    <div class="kanban-wrapper">
+        <img src="img/logo.png" class="logo" alt="Logo">
+
+        <h2>Quadro de Tarefas</h2>
+
+        <div class="container">
+            <div class="coluna">
+                <h3>A fazer</h3>
+                <div id="afazer"></div>
+                <button class="add-btn" onclick="abrirModal('afazer')">+ Adicionar</button>
+            </div>
+
+            <div class="coluna">
+                <h3>Em andamento</h3>
+                <div id="emandamento"></div>
+                <button class="add-btn" onclick="abrirModal('emandamento')">+ Adicionar</button>
+            </div>
+
+            <div class="coluna">
+                <h3>Concluído</h3>
+                <div id="concluido"></div>
+                <button class="add-btn" onclick="abrirModal('concluido')">+ Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTarefa" class="modal">
+        <div class="modal-conteudo">
+            <h3 id="tituloModal">Nova tarefa</h3>
+
+            <input type="text" id="tituloTarefa" class="input" placeholder="Digite a tarefa">
+
+            <select id="categoriaTarefa" class="input">
+                <option value="">Selecione a categoria</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Cadastro">Cadastro</option>
+                <option value="Criação">Criação</option>
+                <option value="Orçamento">Orçamento</option>
+                <option value="Estoque">Estoque</option>
+                <option value="Atendimento">Atendimento</option>
+                <option value="Catálogo">Catálogo</option>
+                <option value="Compras">Compras</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Organização">Organização</option>
+            </select>
+
+            <input type="date" id="dataTarefa" class="input">
+            <input type="time" id="horaTarefa" class="input">
+            <input type="text" id="responsavelTarefa" class="input" placeholder="Responsável">
+
+            <div class="modal-botoes">
+                <button class="botao" onclick="salvarNovaTarefa()">Salvar</button>
+                <button class="botao botao-secundario" onclick="fecharModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function sair() {
+            localStorage.removeItem("usuarioLogado");
+            window.location.href = "login.html";
+        }
+
+        function irParaCalendario() {
+            window.location.href = "calendario.html";
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

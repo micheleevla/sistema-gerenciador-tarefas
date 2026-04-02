@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-centralizada">
+
+    <div class="login-container">
+        <img src="img/logo.png" alt="Logo" class="logo">
+
+        <input type="text" id="usuario" placeholder="Usuário" class="input">
+        <input type="password" id="senha" placeholder="Senha" class="input">
+
+        <button onclick="entrar()" class="botao">Entrar</button>
+    </div>
+
+    <script>
+async function entrar() {
+    const username = document.getElementById("usuario").value;
+    const senha = document.getElementById("senha").value;
+
+    if (!username || !senha) {
+        alert("Preencha usuário e senha");
+        return;
+    }
+
+    try {
+        const resposta = await fetch("http://localhost:5202/api/Usuarios/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                senha: senha
+            })
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            alert(erro.mensagem);
+            return;
+        }
+
+        const dados = await resposta.json();
+
+        // salva usuário logado
+        localStorage.setItem("usuarioLogado", JSON.stringify(dados));
+
+        // redireciona
+        window.location.href = "dashboard.html";
+
+    } catch (erro) {
+        alert("Erro ao conectar com o servidor");
+        console.error(erro);
+    }
+}
+</script>
+
+</body>
+</html>
